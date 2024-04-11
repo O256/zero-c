@@ -1,12 +1,12 @@
-; 调用0x10号BIOS中断，清屏
-mov al, 0x03
+; 开启320*200分辨率256色图形模式(此时显存0xa0000~0xaf9ff)
+mov al, 0x13
 mov ah, 0x00
 int 0x10 
 
 ; LBA28模式，逻辑扇区号28位，从0x0000000到0xFFFFFFF
 ; 设置读取扇区的数量
 mov dx, 0x01f2
-mov al, 12 ; 读取连续的几个扇区，每读取一个al就会减1
+mov al, 100 ; 读取连续的几个扇区，每读取一个al就会减1
 out dx, al
 ; 设置起始扇区号，28位需要拆开
 mov dx, 0x01f3
@@ -59,31 +59,58 @@ mov [es:0x08], word 0x1fff ; Limit=0x001fff，这是低8位
 mov [es:0x0a], word 0x8000 ; Base=0x00008000，这是低16位
 mov [es:0x0c], byte 0      ; 这是Base的16~23位
 mov [es:0x0d], byte 1_00_1_100_0b ; P=1, DPL=0, S=1, Type=100b, A=0
-mov [es:0x0e], byte 0_1_00_0000b  ; G=0, D/B=1, AVL=00, Limit的高4位是0000
+mov [es:0x0e], byte 0_1_0_0_0000b  ; G=0, D/B=1, L=0, AVL=0, Limit的高4位是0000
 mov [es:0x0f], byte 0      ; 这是Base的高8位
 
 ; 2号段
-; 基址0xb8000，上限0xb8f9f，覆盖所有显存
-mov [es:0x10], word 0x0f9f ; Limit=0x000f9f，这是低16位
-mov [es:0x12], word 0x8000 ; Base=0x0b8000，这是低16位
-mov [es:0x14], byte 0x0b   ; 这是Base的高8位
+; 基址0xa0000，上限0xaf9ff，覆盖所有显存
+mov [es:0x10], word 0xf9ff ; Limit=0x00f9ff，这是低16位
+mov [es:0x12], word 0x0000 ; Base=0x0a0000，这是低16位
+mov [es:0x14], byte 0x0a   ; 这是Base的高8位
 mov [es:0x15], byte 1_00_1_001_0b ; P=1, DPL=0, S=1, Type=001b, A=0
-mov [es:0x16], byte 0_1_00_0000b  ; G=0, D/B=1, AVL=00, Limit的高4位是0000
+mov [es:0x16], byte 0_1_0_0_0000b  ; G=0, D/B=1, L=0, AVL=0, Limit的高4位是0000
 mov [es:0x17], byte 0      ; 这是Base的高8位
 
 ; 3号段-数据段（要包含和对其代码段）
 ; 基址0x8000，大小4MB
-mov [es:0x18], word 0x03ff ; Limit=0x400，这是低8位
+mov [es:0x18], word 0x03ff ; Limit=0x400，这是低16位
 mov [es:0x1a], word 0x8000 ; Base=0x00008000，这是低16位
 mov [es:0x1c], byte 0x0000 ; 这是Base的16~23位
 mov [es:0x1d], byte 1_00_1_001_0b ; P=1, DPL=0, S=1, Type=001b, A=0
-mov [es:0x1e], byte 1_1_00_0000b  ; G=1, D/B=1, AVL=00, Limit的高4位是0000
+mov [es:0x1e], byte 1_1_0_0_0000b  ; G=1, D/B=1, L=0, AVL=0, Limit的高4位是0000
 mov [es:0x1f], byte 0x00   ; 这是Base的高8位
+
+; 4号段-辅助段
+; 基址0x0000，上限0xfffff 
+mov [es:0x20], word 0x00ff ; Limit=0x00ff，这是低16位
+mov [es:0x22], word 0x0000 ; Base=0x0a0000，这是低16位
+mov [es:0x24], byte 0x00   ; 这是Base的高8位
+mov [es:0x25], byte 1_00_1_001_0b ; P=1, DPL=0, S=1, Type=001b, A=0
+mov [es:0x26], byte 1_1_00_0000b  ; G=1, D/B=1, AVL=00, Limit的高4位是0000
+mov [es:0x27], byte 0      ; 这是Base的高8位
+
+; 5号段-64位代码段
+; 强制平坦模式，基址无效，上限0xffffffff
+mov [es:0x28], word 0xffff ; Limit=0xffff，这是低16位
+mov [es:0x2a], word 0x0000 ; Base无效
+mov [es:0x2c], byte 0x0000 ; Base无效
+mov [es:0x2d], byte 1_00_1_101_0b ; P=1, DPL=0, S=1, Type=101b, A=0
+mov [es:0x2e], byte 1_0_1_0_0000b ; G=1, D/B=0, L=1, AVL=0, Limit的高4位是0000
+mov [es:0x2f], byte 0x00   ; Base无效
+
+; 6号段-64位数据段
+; 强制平坦模式，基址无效，上限0xffffffff
+mov [es:0x30], word 0xffff ; Limit=0xffff，这是低16位
+mov [es:0x32], word 0x0000 ; Base无效
+mov [es:0x34], byte 0x0000 ; Base无效
+mov [es:0x35], byte 1_00_1_001_0b ; P=1, DPL=0, S=1, Type=001b, A=0
+mov [es:0x36], byte 1_0_1_0_0000b ; G=1, D/B=0, L=1, AVL=0, Limit的高4位是0000
+mov [es:0x37], byte 0x00   ; Base无效
 
 ; 下面是gdt信息的配置（暂且放在0x07f00的位置）
 mov ax, 0x07f0
 mov es, ax
-mov [es:0x00], word 31      ; 因为目前配了4个段，长度为32，所以limit为31
+mov [es:0x00], word 55      ; 因为目前配了7个段，长度为56，所以limit为55
 mov [es:0x02], dword 0x7e00 ; GDT配置表的首地址
 ; 把gdt配置进gdtr
 lgdt [es:0x00]

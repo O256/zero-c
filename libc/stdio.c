@@ -7,18 +7,60 @@ extern void SetVMem(long addr, unsigned char data);
 
 // 定义光标信息
 typedef struct {
-  long offset; // 暂时只需要一个偏移量
+  long x_offset, y_offset;
 } CursorInfo;
 
-static CursorInfo g_cursor_info = {0}; // 全局变量，保存光标信息
+static CursorInfo g_cursor_info = {0, 0}; // 全局变量，保存光标信息
+
+// 光标后移
+static void CursorInc() {
+  g_cursor_info.x_offset += 8;
+  if (g_cursor_info.x_offset >= 320) { // 超出屏幕了，换行
+    g_cursor_info.x_offset = 0;
+    g_cursor_info.y_offset += 16;
+  }
+}
+// 光标前移
+static void CursorRed() {
+  g_cursor_info.x_offset -= 8;
+  if (g_cursor_info.x_offset < 0) { // 超出屏幕了，换行
+    g_cursor_info.x_offset = 320 - 8;
+    g_cursor_info.y_offset -= 16;
+  }
+  if (g_cursor_info.y_offset < 0) {
+    g_cursor_info.y_offset = 0; // 已经在首行的不再继续换
+  }
+}
+// 光标换行
+static void CursorNewLine() {
+  g_cursor_info.x_offset = 0;
+  g_cursor_info.y_offset += 16;
+}
+
+// 字体数据
+extern uint8_t fonts[256][16];
+
+// 绘制字符
+void DrawCharacter(int x, int y, char ch, uint8_t color) {
+  // 找到ch对应的字体数据
+  const uint8_t *font = fonts[ch];
+  // 开始绘制
+  for (int i = 0; i < 16; i++) {
+    for (int j = 0; j < 8; j++) {
+      // 如果当前位置是否需要渲染，则设置颜色
+      if (font[i] & (1 << (7 - j))) {
+        SetVMem(x + j + (y + i) * 320, color);
+      }
+    }
+  }
+}
 
 int putchar(int ch) {
   if (ch == '\n') { // 处理换行
-    g_cursor_info.offset += 80 * 2; // 一行是80字符
-    g_cursor_info.offset -= ((g_cursor_info.offset / 2) % 80) * 2; // 回到行首
+    CursorNewLine();
   } else {
-    SetVMem(g_cursor_info.offset++, (unsigned char)ch);
-    SetVMem(g_cursor_info.offset++, 0x0f);
+    DrawCharacter(g_cursor_info.x_offset, g_cursor_info.y_offset, (char)ch, 0x12);
+    CursorInc();
   }
   return ch;
 }
@@ -78,7 +120,7 @@ static size_t uint_to_string(char *res, unsigned i, uint8_t base) {
   int rem = i % base;
   // 利用函数递归栈逆向结果
   if (quo != 0) {
-    size += uint_to_string(res, quo, base);
+    size += int_to_string(res, quo, base);
   }
   
   if (rem >= 0 && rem <= 9) {

@@ -1,8 +1,16 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdint.h"
 #include "stddef.h"
 
-typedef uint8_t *va_list;
+// 通过编译器内建功能来完成
+typedef __builtin_va_list va_list;
+#define va_start(v, l) __builtin_va_start(v, l)
+#define va_arg(v, t) __builtin_va_arg(v, t)
+#define va_end(v) __builtin_va_end(v)
 
-#define va_start(varg_ptr, last_val) (varg_ptr = (uint8_t *)(&last_val + 1))
-#define va_arg(varg_ptr, type) (varg_ptr += sizeof(type), *((type *)varg_ptr - 1))
-#define va_end(varg_ptr) (varg_ptr = NULL)
+#ifdef __cplusplus
+}
+#endif

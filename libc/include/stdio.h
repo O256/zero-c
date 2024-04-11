@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stdarg.h"
 
 int putchar(int ch);
@@ -12,3 +16,9 @@ int vprintf(const char *fmt, va_list li);
 
 __attribute__((format(printf, 1, 2)))
 int printf(const char *fmt, ...);
+
+void SetVMem(long addr, unsigned char data);
+
+#ifdef __cplusplus
+}
+#endif
