@@ -3,7 +3,7 @@ all: sys
 
 .PHONY: run
 run: bochsrc sys
-	bochs -qf bochsrc
+	bochsdbg -qf bochsrc
 
 a.img:
 	del -f a.img
