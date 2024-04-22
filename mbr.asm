@@ -3,9 +3,30 @@
 ; 颜色信息：0-2位为背景色，4-6位为前景色，7位为闪烁，3位是否高亮
 ; 对应的显存地址范围为0xb8000~0xb8f9f
 
+mov al, 0x03
+mov ah, 0x00
+int 0x10
+
 mov ax, 0xb800
 mov ds, ax
 mov [0x0000], byte 'H'
+mov [0x0001], byte 0x0f
+
+mov [0x0002], byte 'e'
+mov [0x0003], byte 0x8f
+
+mov [0x0004], byte 'l'
+mov [0x0005], byte 0x0f
+
+mov [0x0006], byte 'l'
+mov [0x0007], byte 0x0f
+
+mov [0x0008], byte 'o'
+mov [0x0009], byte 0x0f
+
+mov [0x000a], byte ' '
+mov [0x000b], byte 0x0f
+
 hlt
 
 times 510-($-$$) db 0
