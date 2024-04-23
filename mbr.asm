@@ -4,32 +4,8 @@ mov al, 0x03 ; 功能号
 mov ah, 0x00 ; 子功能号
 int 0x10
 ; 加载一个扇区到0x08000的位置
-mov ax, 0x0800
-mov es, ax
-mov bx, 0x0000
-mov ah, 0x02 ; 功能号
-mov al, 0x02 ; 读取扇区数
-mov ch, 0x00 ; 柱面号
-mov dh, 0x00 ; 磁头号
-mov cl, 0x02 ; 扇区号
-mov dl, 0x00 ; 驱动器号
-int 0x13 ; 调用0x13号bios中断
-
-; 打印指定内存 x /64b 0x0800
-; 添加断点 pb
-; 查看寄存器 r 或者 sreg
-
-
-; 跳转到0x0800:0x0000处执行
-jmp 0x0800:0x0000
-
-times 510-($-$$) db 0
-dw 0xaa55
-
-; C0H0S2
-begin:  ; 代码段起始地址
-mov ax, 0xb800 ; 数据段起始地址
-mov ds, ax ; 数据段地址
+mov ax, 0xb800
+mov ds, ax
 
 mov [0x0000], byte 'H'
 mov [0x0001], byte 0x0f
@@ -58,4 +34,6 @@ mov [0x0017], byte 0x0f
 
 hlt
 
-times 1024-($-begin) db 0 ; 填充剩余空间
+times 510-($-$$) db 0
+dw 0xaa55
+
