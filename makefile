@@ -8,3 +8,6 @@ run: mbr.bin
 
 mbr.bin: mbr.asm
 	nasm -fbin mbr.asm -o mbr.bin
+
+clean:
+	-del -f mbr.bin

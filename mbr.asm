@@ -13,7 +13,7 @@ out dx, al
 
 ; 设置读取的起始扇区号
 mov dx, 0x01f3 ; 读取起始扇区号
-mov al, 0x02 ; 读取第二个扇区
+mov al, 0x01 ; 读取第二个扇区
 out dx, al
 
 mov dx, 0x01f4 
@@ -26,12 +26,8 @@ out dx, al
 
 ; 设置读取硬盘的LBA模式
 mov dx, 0x01f6
-mov al, 0x00 ; 低4位为0，高4位为1，表示LBA模式，第4位为0表示主盘
-out dx, al
-
-; mov dx, 0x01f6
-; mov al, 111_0_0000b ; 低4位为0，高4位为1，表示LBA模式，第4位为1表示主盘
-; out dx, al 
+mov al, 111_0_0000b ; 低4位为0，高4位为1，表示LBA模式，第4位为1表示主盘
+out dx, al 
 
 ; 读取硬盘数据
 mov dx, 0x01f7
