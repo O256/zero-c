@@ -1,6 +1,6 @@
 ; C0H0S2
 begin:
-    mov ax, 0xb800
+    mov ax, 00010_00_0b ; 选择2号段，0号偏移，显存段
     mov ds, ax
     mov [0x0000], byte 'H'
     mov [0x0001], byte 0x0f

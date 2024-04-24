@@ -9,8 +9,8 @@ run: a.img
 mbr.bin: mbr.asm
 	nasm -fbin mbr.asm -o mbr.bin
 
-kernel.bin: kernel2.asm
-	nasm -fbin kernel2.asm -o kernel.bin
+kernel.bin: kernel.asm
+	nasm -fbin kernel.asm -o kernel.bin
 
 a.img: mbr.bin kernel.bin
 	dd if=/dev/zero of=a.img bs=512 count=3

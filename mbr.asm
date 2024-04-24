@@ -57,7 +57,43 @@ read:
     add bx, 2
     loop read
 
-jmp 0x0800:0x0000 ; 跳转到读取的数据
+;配置GDT
+mov ax, 0x07e0 
+mov es, ax 
+
+;空白段
+mov [es:0x00], dword 0 ; 基址
+mov [es:0x04], dword 0 ; 大小
+
+;1号段
+;基址0x8000,大小8KB
+mov [es:0x08], word 0x1fff ; Limit=0x1fff
+mov [es:0x0a], word 0x8000 ; Base=0x008000，这是低16位
+mov [es:0x0c], byte 0 ; 这是Base的高8位
+mov [es:0x0d], byte 1_00_1_100_0b ; P=1, DPL=0, S=1, Type=100b, A=0
+mov [es:0x0e], word 0  ; AVL
+
+;2号段
+;基址0xb8000,上限0xb8f9f,覆盖所有显存
+mov [es:0x10], word 0xf9f ; Limit=0xf9f
+mov [es:0x12], word 0xb8000 ; Base=0x00b8000，这是低16位
+mov [es:0x14], byte 0xb ; 这是Base的高8位
+mov [es:0x15], byte 1_00_1_001_0b ; P=1, DPL=0, S=1, Type=100b, A=0
+mov [es:0x16], word 0  ; AVL
+
+; 下面是gdt信息的配置
+mov ax, 0x07f0
+mov es, ax
+mov [es:0x00], word 0x17 ; GDT的大小
+mov [es:0x02], dword 0x7e00 ; GDT的基址
+lgdt [es:0x00]
+
+mov eax, cr0
+or eax, 0x01
+mov cr0, eax
+
+jmp 00001_00_0b:0
+
 times 510-($-$$) db 0
 dw 0xaa55
 
