@@ -83,10 +83,19 @@ mov [es:0x15], byte 1_00_1_001_0b ; P=1, DPL=0, S=1, Type=100b, A=0
 mov [es:0x16], byte 0_1_00_0000b  ; G=0, D/B=1, AVL=00, Limit的高4位是0000
 mov [es:0x07], byte 0 ; Base的高8位
 
+;3号段
+;基址0x200000,大小4MB
+mov [es:0x18], word 0x3ff ; Limit=0x3ff, 这是低8位
+mov [es:0x1a], word 0x0000 ; Base=0x200000，这是低16位
+mov [es:0x1c], byte 0x02 ; 这是Base的高8位
+mov [es:0x1d], byte 1_00_1_001_0b ; P=1, DPL=0, S=1, Type=001b, A=0
+mov [es:0x1e], byte 1_1_00_0000b  ; G=1, D/B=1, AVL=00, Limit的高4位是0000
+mov [es:0x1f], byte 0x00 ; Base的高8位
+
 ; 下面是gdt信息的配置
 mov ax, 0x07f0
 mov es, ax
-mov [es:0x00], word 0x17 ; GDT的大小
+mov [es:0x00], word 31 ; GDT的大小
 mov [es:0x02], dword 0x7e00 ; GDT的基址
 lgdt [es:0x00]
 
