@@ -28,3 +28,4 @@ clean:
 	-del -f *.out
 	-del -f *.o
 	-del -f *.gas
+	-del -f *.lock
