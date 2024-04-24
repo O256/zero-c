@@ -5,13 +5,12 @@ section .text
 begin:
     mov ax, 00011_00_0b ; 选择3号段，数据段
     mov ss, ax ; 设置栈段寄存器
+    mov ds, ax ; 设置数据段寄存器
+    mov es, ax ; 设置附加段寄存器
 
     mov eax, 0x1000
     mov esp, eax ; 设置栈指针
     mov ebp, eax ; 记录初始栈顶
-
-    mov ax, 00010_00_0b ; 选择2号段，显存段
-    mov ds, ax ; 设置数据段寄存器
 
     extern Entry
     call Entry
