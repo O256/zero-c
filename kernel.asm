@@ -5,35 +5,63 @@ begin:
     mov ax, 00011_00_0b ; 选择3号段，数据段
     mov ss, ax ; 设置栈段寄存器
 
+    mov eax, 0x1000
+    mov esp, eax ; 设置栈指针
+    mov ebp, eax ; 记录初始栈顶
+
     mov ax, 00010_00_0b; 选择2号段，显存段
     mov ds, ax ; 设置数据段寄存器
 
-    mov [0x0000], byte '_'
-    mov [0x0001], byte 0x0f
-    mov [0x0002], byte '1'
-    mov [0x0003], byte 0x0f
-    mov [0x0004], byte '_'
-    mov [0x0005], byte 0x0f
+    mov [es:0x2000], dword 0
 
-    call f_test
+    mov al, byte 'H'
+    mov ah, byte 0x0f ; 白底黑字
+    push eax
+    call print
+    pop eax
+    call print1
 
-    mov [0x0030], byte '_'
-    mov [0x0031], byte 0x0f
-    mov [0x0032], byte '2'
-    mov [0x0033], byte 0x0f
-    mov [0x0034], byte '_'
-    mov [0x0035], byte 0x0f
+    hlt
 
-    hlt ; 暂停CPU
+print1:
+    mov al, byte 'e'
+    mov ah, byte 0x0f ; 白底黑字
+    push eax
+    call print
+    pop eax
 
-f_test:
-    mov [0x0020], byte '_'
-    mov [0x0021], byte 0x0f
-    mov [0x0022], byte '3'
-    mov [0x0023], byte 0x0f
-    mov [0x0024], byte '_'
-    mov [0x0025], byte 0x0f
+    mov al, byte 'l'
+    mov ah, byte 0x0f ; 白底黑字
+    push eax
+    call print
+    pop eax
 
+    mov al, byte 'l'
+    mov ah, byte 0x0f ; 白底黑字
+    push eax
+    call print
+    pop eax
+
+    mov al, byte '0'
+    mov ah, byte 0x0f ; 白底黑字
+    push eax
+    call print
+    pop eax
+
+print:
+    push ebp
+    mov ebp, esp
+    push eax
+    push edx
+    mov edx, [ss: ebp + 8]
+    mov eax, [es: 0x2000]
+    sal eax, 1
+    mov [eax], dx
+    inc dword [es: 0x2000]
+
+    pop edx
+    pop eax
+    pop ebp
     ret
 
 times 1024-($-begin) db 0 ; 填充剩余的空间
