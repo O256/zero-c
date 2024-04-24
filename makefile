@@ -3,8 +3,8 @@
 all: run
 
 run: a.img
-	bochs -qf bochsrc
-	# bochsdbg -qf bochsrc
+	bochsdbg -qf bochsrc
+	# bochs -qf bochsrc
 
 mbr.bin: mbr.asm
 	nasm -fbin mbr.asm -o mbr.bin
