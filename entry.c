@@ -23,7 +23,18 @@ int putchar(int c)
     return c;
 }
 
+int puts(const char *s)
+{
+    while (*s)
+    {
+        putchar(*s++);
+    }
+
+    return 0;
+}
+
 void Entry()
 {
-    putchar('H');
+    puts("Hello, World!\n");
+    puts("The 2nd line.\n");
 }
