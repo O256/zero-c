@@ -32,9 +32,3 @@ int puts(const char *s)
 
     return 0;
 }
-
-void Entry()
-{
-    puts("Hello, World!\n");
-    puts("The 2nd line.\n");
-}

@@ -77,7 +77,7 @@ mov [es:0x0f], byte 0 ; Base的高8位
 ;2号段
 ;基址0xb8000,上限0xb8f9f,覆盖所有显存
 mov [es:0x10], word 0xf9f ; Limit=0xf9f
-mov [es:0x12], word 0xb8000 ; Base=0x00b8000，这是低16位
+mov [es:0x12], word 0x8000 ; Base=0x00b8000，这是低16位
 mov [es:0x14], byte 0xb ; 这是Base的高8位
 mov [es:0x15], byte 1_00_1_001_0b ; P=1, DPL=0, S=1, Type=100b, A=0
 mov [es:0x16], byte 0_1_00_0000b  ; G=0, D/B=1, AVL=00, Limit的高4位是0000
