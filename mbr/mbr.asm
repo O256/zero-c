@@ -8,12 +8,12 @@ int 0x10
 ; 设置读取的扇区数量
 
 mov dx, 0x1f2 ; 读取扇区数量
-mov al, 0x02 ; 读取2个扇区
+mov al, 12 ; 读取2个扇区
 out dx, al 
 
 ; 设置读取的起始扇区号
 mov dx, 0x01f3 ; 读取起始扇区号
-mov al, 0x01 ; 读取第二个扇区
+mov al, 0x02 ; 读取第二个扇区
 out dx, al
 
 mov dx, 0x01f4 
@@ -45,7 +45,7 @@ wait_finish:
     jnz wait_finish
 
 ; 读取硬盘数据
-mov cx, 512 ; 读取512个字节
+mov cx, 1024 * 12 / 2 ; 读取12KB数据
 mov dx, 0x01f0
 mov ax, 0x0800
 mov ds, ax
