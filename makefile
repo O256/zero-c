@@ -1,10 +1,10 @@
 .PHONY: all run clean
 
-all: run
+all: a.img
 
 run: a.img
-# bochs -qf bochsrc
-	bochsdbg -qf bochsrc
+	bochs -qf bochsrc
+# bochsdbg -qf bochsrc
 
 mbr/mbr.bin:
 	pushd mbr && $(MAKE) clean && $(MAKE) mbr.bin && popd

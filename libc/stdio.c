@@ -1,8 +1,6 @@
 #include "include/stdio.h"
 #include "include/string.h"
 
-extern void SetVMem(long addr, unsigned char data);
-
 typedef struct
 {
     long offset;
