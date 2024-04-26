@@ -1,7 +1,7 @@
 #ifndef string_h
 #define string_h
 
-#include "stddef.h"
+#include "stdarg.h"
 
 char *strcpy(char *dest, const char *src);
 size_t strlen(const char *str);

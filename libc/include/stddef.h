@@ -2,7 +2,7 @@
 #define stddef_h
 
 #ifndef NULL
-#define NULL ((void *)0)
+#define NULL (void *)0
 #endif
 
 typedef unsigned size_t;

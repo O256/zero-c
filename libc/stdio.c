@@ -1,19 +1,15 @@
 #include "include/stdio.h"
 #include "include/string.h"
-#include "include/stdint.h"
-#include "include/stddef.h"
-#include "include/stdarg.h"
 
 extern void SetVMem(long addr, unsigned char data);
-
-#define STDOUT_BUF_SIZE 1024
 
 typedef struct
 {
     long offset;
 } CursorInfo;
 
-CursorInfo g_cursor_info = {0};
+#define STDOUT_BUF_SIZE 1024
+static CursorInfo g_cursor_info = {0}; // 全局变量，保存光标信息
 
 int putchar(int c)
 {
@@ -82,7 +78,7 @@ static size_t int_to_string(char *res, int i, uint8_t base)
     return size;
 }
 
-static size_t uint_to_string(char *res, unsigned i, uint8_t base)
+size_t uint_to_string(char *res, unsigned i, uint8_t base)
 {
     if (base > 16 || base <= 1)
     {
