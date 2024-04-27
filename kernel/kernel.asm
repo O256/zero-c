@@ -74,17 +74,25 @@ begin:
     
     ; 开启IA-32e模式
 
-    mov ax, 00011_00_0b ; 选择3号段，数据段
-    mov ss, ax ; 设置栈段寄存器
-    mov ds, ax ; 设置数据段寄存器
-    mov es, ax ; 设置附加段寄存器
+    ; 刷新cs进入IA-32e模式
+    jmp 00101_00_0b:ent64 + 0x8000 
 
-    mov eax, 0x1000
-    mov esp, eax ; 设置栈指针
-    mov ebp, eax ; 记录初始栈顶
+    [bits 64]
+    ent64:
+        mov r8, 0x123456789 ; 设置数据段选择子
+    ; hlt
 
-    extern Entry
-    call Entry
+    ; mov ax, 00011_00_0b ; 选择3号段，数据段
+    ; mov ss, ax ; 设置栈段寄存器
+    ; mov ds, ax ; 设置数据段寄存器
+    ; mov es, ax ; 设置附加段寄存器
 
-    hlt
+    ; mov eax, 0x1000
+    ; mov esp, eax ; 设置栈指针
+    ; mov ebp, eax ; 记录初始栈顶
+
+    ; extern Entry
+    ; call Entry
+
+    ; hlt
 
