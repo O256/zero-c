@@ -52,6 +52,7 @@ begin:
     ; PDT
     mov [es:0x22000], dword 0x83 ; P=1, RW=1, PS=1(不再有下级页表，所以直接按2MB分页), Base=0x0，大小2MB
     mov [es:0x22004], dword 0
+
     
     ; 将页目录首地址写入CR3寄存器中
     mov eax, 00100000_00000000_0_0_00b ; PCD=0, PWT=0, BASE=0x00020_000
@@ -68,19 +69,12 @@ begin:
     or eax, 0x100 ; 设置第8位，LME(Long Mode Enable)
     wrmsr ; 将eax的值写入ecx对应地址的寄存器
 
+    ; 开启CR0的PG位，开启分页机制
     mov eax, cr0
     or eax, 0x80000000 ; 设置CR0的PG位
     mov cr0, eax ; 设置CR0的PG位, 开启分页机制
     
     ; 开启IA-32e模式
-
-    ; 刷新cs进入IA-32e模式
-    jmp 00101_00_0b:ent64 + 0x8000 
-
-    [bits 64]
-    ent64:
-        mov r8, 0x123456789 ; 设置数据段选择子
-    ; hlt
 
     ; mov ax, 00011_00_0b ; 选择3号段，数据段
     ; mov ss, ax ; 设置栈段寄存器
@@ -95,4 +89,24 @@ begin:
     ; call Entry
 
     ; hlt
+
+    jmp 00101_00_0b:ent64
+
+    [bits 64]
+    ent64:
+    mov ax, 00110_00_0b
+    mov ss, ax
+    mov ds, ax
+    mov es, ax
+
+    mov rax, 0x1000
+    mov rsp, rax
+    mov rbp, rax
+
+    extern Entry
+    call Entry
+
+    hlt
+
+    
 
