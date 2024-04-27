@@ -3,6 +3,7 @@
         "stdint.h": "c",
         "stddef.h": "c",
         "string.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "draw.h": "c"
     }
 }

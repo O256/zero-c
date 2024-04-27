@@ -1,25 +1,54 @@
 #include "include/stdio.h"
 #include "include/string.h"
+#include "include/draw.h"
 
 typedef struct
 {
-    long offset;
+    long x;
+    long y;
 } CursorInfo;
 
 #define STDOUT_BUF_SIZE 1024
-static CursorInfo g_cursor_info = {0}; // 全局变量，保存光标信息
+static CursorInfo g_cursor_info = {0, 0}; // 全局变量，保存光标信息
+
+// 光标移动到下一行
+void NextLine()
+{
+    g_cursor_info.x = 0;
+    g_cursor_info.y += FONT_HEIGHT;
+}
+
+// 光标后移
+void NextChar()
+{
+    g_cursor_info.x += FONT_WIDTH;
+    if (g_cursor_info.x >= SCREEN_WIDTH)
+    {
+        NextLine();
+    }
+}
+
+// 光标前移
+void PrevChar()
+{
+    g_cursor_info.x--;
+    if (g_cursor_info.x < 0)
+    {
+        g_cursor_info.x = SCREEN_WIDTH - 1;
+        g_cursor_info.y--;
+    }
+}
 
 int putchar(int c)
 {
     if (c == '\n')
     {
-        g_cursor_info.offset += 80 * 2;
-        g_cursor_info.offset -= ((g_cursor_info.offset / 2) % 80) * 2;
+        NextLine();
     }
     else
     {
-        SetVMem(g_cursor_info.offset++, (unsigned char)c);
-        SetVMem(g_cursor_info.offset++, 0x0f);
+        DrawChar(g_cursor_info.x, g_cursor_info.y, c, 0x01);
+        NextChar();
     }
 
     return c;
