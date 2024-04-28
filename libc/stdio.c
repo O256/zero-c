@@ -217,7 +217,7 @@ int vprintf(const char *fmt, va_list li)
 int printf(const char *fmt, ...)
 {
     va_list li;
-    va_start(li, fmt);
+    va_start(li, fmt); // 栈中元素个数是通过fmt来计算的
     int ret = vprintf(fmt, li);
     va_end(li);
     return ret;
