@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean build_asm
 
 all: mbr.bin
 

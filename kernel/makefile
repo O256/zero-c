@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean build_asm
 
 all: kernel.bin
 
@@ -14,6 +14,9 @@ kernel.bin: kernel.asm entry.c libc.a
 # x86_64-elf-objcopy -I elf32-i386 -S -R ".eh_frame" -R ".comment" -O binary kernel.out kernel.bin
 	x86_64-elf-ld -m elf_x86_64 -Ttext=0x8000 kernel.o entry.o -L../libc/ -lc -o kernel.out
 	x86_64-elf-objcopy -I elf64-x86-64 -S -R ".eh_frame" -R ".comment" -O binary kernel.out kernel.bin
+
+build_asm: 
+	x86_64-elf-gcc -S -masm=intel -m64 -march=x86-64 -fno-builtin -I../libc/include/ entry.c -o entry.s
 
 clean: 
 	-del -f *.o
