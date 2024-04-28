@@ -11,8 +11,8 @@ strcpy:
 	.cfi_offset 6, -16
 	mov	rbp, rsp
 	.cfi_def_cfa_register 6
-	mov	QWORD PTR [rbp-24], rdi
-	mov	QWORD PTR [rbp-32], rsi
+	mov	QWORD PTR [rbp-24], rdi ; dest
+	mov	QWORD PTR [rbp-32], rsi ; src
 	mov	rax, QWORD PTR [rbp-24]
 	mov	QWORD PTR [rbp-8], rax
 	jmp	.L2
