@@ -4,7 +4,7 @@ all: a.img
 
 bochs: a.img
 	bochs -qf bochsrc
-	
+
 bochsdbg: a.img
 	bochsdbg -qf bochsrc
 
@@ -29,6 +29,6 @@ clean:
 	pushd kernel && $(MAKE) clean && popd
 	pushd libc && $(MAKE) clean && popd
 
-	-del -f *.img
-	-del -f *.lock
-	
+	-rm -f *.img
+	-rm -f *.lock
+

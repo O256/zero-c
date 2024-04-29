@@ -5,5 +5,6 @@
         "string.h": "c",
         "stdio.h": "c",
         "draw.h": "c"
-    }
+    },
+    "C_Cpp.clang_format_fallbackStyle": "Visual Studio"
 }

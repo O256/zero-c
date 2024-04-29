@@ -6,5 +6,5 @@ mbr.bin: mbr.asm
 	nasm -fbin mbr.asm -o mbr.bin
 
 clean:
-	-del -f *.bin
-	-del -f *.o
+	-rm -f *.bin
+	-rm -f *.o
