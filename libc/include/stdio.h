@@ -1,9 +1,15 @@
-#ifndef stdio_h
-#define stdio_h
+#pragma once
 
-int putchar(int c);
-int puts(const char *s);
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
-int printf(const char *fmt, ...);
+    int putchar(int c);
+    int puts(const char *s);
 
+    int printf(const char *fmt, ...);
+
+#ifdef __cplusplus
+}
 #endif

@@ -2,8 +2,10 @@
 
 all: a.img
 
-run: a.img
-# bochs -qf bochsrc
+bochs: a.img
+	bochs -qf bochsrc
+	
+bochsdbg: a.img
 	bochsdbg -qf bochsrc
 
 mbr/mbr.bin:

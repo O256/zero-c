@@ -353,18 +353,18 @@ vsprintf:
 	mov	QWORD PTR [rbp-8], rax
 	mov	rax, QWORD PTR [rbp-40]
 	mov	QWORD PTR [rbp-16], rax
-	jmp	.L34 
-.L45:
+	jmp	.L34
+.L57:
 	mov	rax, QWORD PTR [rbp-8]
 	movzx	eax, BYTE PTR [rax]
 	cmp	al, 37
 	jne	.L35
-	add	QWORD PTR [rbp-8], 1 ; 跳过%
-	mov	rax, QWORD PTR [rbp-8] ; 获取格式化字符
-	lea	rdx, [rax+1] ; 下一个字符, 用于更新指针
-	mov	QWORD PTR [rbp-8], rdx ; 更新指针
-	movzx	eax, BYTE PTR [rax] ; 获取格式化字符
-	movsx	eax, al ; 转换为有符号整数
+	add	QWORD PTR [rbp-8], 1
+	mov	rax, QWORD PTR [rbp-8]
+	lea	rdx, [rax+1]
+	mov	QWORD PTR [rbp-8], rdx
+	movzx	eax, BYTE PTR [rax]
+	movsx	eax, al
 	cmp	eax, 37
 	je	.L36
 	cmp	eax, 37
@@ -376,32 +376,32 @@ vsprintf:
 	sub	eax, 99
 	cmp	eax, 21
 	ja	.L34
-	mov	eax, eax ; 用于计算偏移量
+	mov	eax, eax
 	mov	rax, QWORD PTR .L39[0+rax*8]
 	jmp	rax
 	.section	.rodata
 	.align 8
 	.align 4
 .L39:
-	.quad	.L44 ; 处理字符, %c
-	.quad	.L43 ; 处理整数, %d
-	.quad	.L34 ; %e
-	.quad	.L34 ; %f
-	.quad	.L34 ; %g
-	.quad	.L34 ; %h
-	.quad	.L34 ; %i
-	.quad	.L34 ; %j
+	.quad	.L44
+	.quad	.L43
 	.quad	.L34
-	.quad	.L34 ; %k
-	.quad	.L34 ; %l
+	.quad	.L34
+	.quad	.L34
+	.quad	.L34
+	.quad	.L34
+	.quad	.L34
+	.quad	.L34
+	.quad	.L34
+	.quad	.L34
 	.quad	.L34
 	.quad	.L42
-	.quad	.L34 ; %n
-	.quad	.L34 ; %o
-	.quad	.L34 ; %p
-	.quad	.L41 ; %s
-	.quad	.L34 ; %r
-	.quad	.L40 ; %u
+	.quad	.L34
+	.quad	.L34
+	.quad	.L34
+	.quad	.L41
+	.quad	.L34
+	.quad	.L40
 	.quad	.L34
 	.quad	.L34
 	.quad	.L38
@@ -413,9 +413,29 @@ vsprintf:
 	mov	BYTE PTR [rax], 37
 	jmp	.L34
 .L43:
-	add	QWORD PTR [rbp-56], 4
 	mov	rax, QWORD PTR [rbp-56]
-	sub	rax, 4
+	mov	eax, DWORD PTR [rax]
+	cmp	eax, 47
+	ja	.L45
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rdx, QWORD PTR [rax+16]
+	mov	rax, QWORD PTR [rbp-56]
+	mov	eax, DWORD PTR [rax]
+	mov	eax, eax
+	add	rax, rdx
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	edx, DWORD PTR [rdx]
+	lea	ecx, [rdx+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	DWORD PTR [rdx], ecx
+	jmp	.L46
+.L45:
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rax, QWORD PTR [rax+8]
+	lea	rcx, [rax+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	QWORD PTR [rdx+8], rcx
+.L46:
 	mov	ecx, DWORD PTR [rax]
 	mov	rax, QWORD PTR [rbp-16]
 	mov	edx, 10
@@ -426,9 +446,29 @@ vsprintf:
 	add	QWORD PTR [rbp-16], rax
 	jmp	.L34
 .L40:
-	add	QWORD PTR [rbp-56], 4
 	mov	rax, QWORD PTR [rbp-56]
-	sub	rax, 4
+	mov	eax, DWORD PTR [rax]
+	cmp	eax, 47
+	ja	.L47
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rdx, QWORD PTR [rax+16]
+	mov	rax, QWORD PTR [rbp-56]
+	mov	eax, DWORD PTR [rax]
+	mov	eax, eax
+	add	rax, rdx
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	edx, DWORD PTR [rdx]
+	lea	ecx, [rdx+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	DWORD PTR [rdx], ecx
+	jmp	.L48
+.L47:
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rax, QWORD PTR [rax+8]
+	lea	rcx, [rax+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	QWORD PTR [rdx+8], rcx
+.L48:
 	mov	ecx, DWORD PTR [rax]
 	mov	rax, QWORD PTR [rbp-16]
 	mov	edx, 10
@@ -439,9 +479,29 @@ vsprintf:
 	add	QWORD PTR [rbp-16], rax
 	jmp	.L34
 .L38:
-	add	QWORD PTR [rbp-56], 4
 	mov	rax, QWORD PTR [rbp-56]
-	sub	rax, 4
+	mov	eax, DWORD PTR [rax]
+	cmp	eax, 47
+	ja	.L49
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rdx, QWORD PTR [rax+16]
+	mov	rax, QWORD PTR [rbp-56]
+	mov	eax, DWORD PTR [rax]
+	mov	eax, eax
+	add	rax, rdx
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	edx, DWORD PTR [rdx]
+	lea	ecx, [rdx+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	DWORD PTR [rdx], ecx
+	jmp	.L50
+.L49:
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rax, QWORD PTR [rax+8]
+	lea	rcx, [rax+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	QWORD PTR [rdx+8], rcx
+.L50:
 	mov	ecx, DWORD PTR [rax]
 	mov	rax, QWORD PTR [rbp-16]
 	mov	edx, 16
@@ -452,9 +512,29 @@ vsprintf:
 	add	QWORD PTR [rbp-16], rax
 	jmp	.L34
 .L42:
-	add	QWORD PTR [rbp-56], 4
 	mov	rax, QWORD PTR [rbp-56]
-	sub	rax, 4
+	mov	eax, DWORD PTR [rax]
+	cmp	eax, 47
+	ja	.L51
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rdx, QWORD PTR [rax+16]
+	mov	rax, QWORD PTR [rbp-56]
+	mov	eax, DWORD PTR [rax]
+	mov	eax, eax
+	add	rax, rdx
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	edx, DWORD PTR [rdx]
+	lea	ecx, [rdx+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	DWORD PTR [rdx], ecx
+	jmp	.L52
+.L51:
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rax, QWORD PTR [rax+8]
+	lea	rcx, [rax+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	QWORD PTR [rdx+8], rcx
+.L52:
 	mov	ecx, DWORD PTR [rax]
 	mov	rax, QWORD PTR [rbp-16]
 	mov	edx, 8
@@ -465,9 +545,29 @@ vsprintf:
 	add	QWORD PTR [rbp-16], rax
 	jmp	.L34
 .L44:
-	add	QWORD PTR [rbp-56], 4
 	mov	rax, QWORD PTR [rbp-56]
-	sub	rax, 4
+	mov	eax, DWORD PTR [rax]
+	cmp	eax, 47
+	ja	.L53
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rdx, QWORD PTR [rax+16]
+	mov	rax, QWORD PTR [rbp-56]
+	mov	eax, DWORD PTR [rax]
+	mov	eax, eax
+	add	rax, rdx
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	edx, DWORD PTR [rdx]
+	lea	ecx, [rdx+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	DWORD PTR [rdx], ecx
+	jmp	.L54
+.L53:
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rax, QWORD PTR [rax+8]
+	lea	rcx, [rax+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	QWORD PTR [rdx+8], rcx
+.L54:
 	mov	ecx, DWORD PTR [rax]
 	mov	rax, QWORD PTR [rbp-16]
 	lea	rdx, [rax+1]
@@ -476,22 +576,43 @@ vsprintf:
 	mov	BYTE PTR [rax], dl
 	jmp	.L34
 .L41:
-	add	QWORD PTR [rbp-56], 8
 	mov	rax, QWORD PTR [rbp-56]
-	mov	rax, QWORD PTR [rax-8]
+	mov	eax, DWORD PTR [rax]
+	cmp	eax, 47
+	ja	.L55
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rdx, QWORD PTR [rax+16]
+	mov	rax, QWORD PTR [rbp-56]
+	mov	eax, DWORD PTR [rax]
+	mov	eax, eax
+	add	rax, rdx
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	edx, DWORD PTR [rdx]
+	lea	ecx, [rdx+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	DWORD PTR [rdx], ecx
+	jmp	.L56
+.L55:
+	mov	rax, QWORD PTR [rbp-56]
+	mov	rax, QWORD PTR [rax+8]
+	lea	rcx, [rax+8]
+	mov	rdx, QWORD PTR [rbp-56]
+	mov	QWORD PTR [rdx+8], rcx
+.L56:
+	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR [rbp-24], rax
 	mov	rdx, QWORD PTR [rbp-24]
-	mov	rax, QWORD PTR [rbp-16] ; 源字符串, 用于strcpy
-	mov	rsi, rdx ; 源字符串, 用于strcpy
-	mov	rdi, rax ; 目的字符串
-	call	strcpy ; 相当于调用函数strcpy(rbp-16, rbp-24)
+	mov	rax, QWORD PTR [rbp-16]
+	mov	rsi, rdx
+	mov	rdi, rax
+	call	strcpy
 	mov	rax, QWORD PTR [rbp-24]
 	mov	rdi, rax
 	call	strlen
 	mov	eax, eax
 	add	QWORD PTR [rbp-16], rax
 	jmp	.L34
-.L35: ; 继续循环，处理下一个字符
+.L35:
 	mov	rdx, QWORD PTR [rbp-8]
 	lea	rax, [rdx+1]
 	mov	QWORD PTR [rbp-8], rax
@@ -504,7 +625,7 @@ vsprintf:
 	mov	rax, QWORD PTR [rbp-8]
 	movzx	eax, BYTE PTR [rax]
 	test	al, al
-	jne	.L45 ; 跳转，继续循环
+	jne	.L57
 	mov	rax, QWORD PTR [rbp-16]
 	sub	rax, QWORD PTR [rbp-40]
 	leave
@@ -523,15 +644,15 @@ sprintf:
 	.cfi_offset 6, -16
 	mov	rbp, rsp
 	.cfi_def_cfa_register 6
-	sub	rsp, 208
-	mov	QWORD PTR [rbp-200], rdi
-	mov	QWORD PTR [rbp-208], rsi
+	sub	rsp, 224
+	mov	QWORD PTR [rbp-216], rdi
+	mov	QWORD PTR [rbp-224], rsi
 	mov	QWORD PTR [rbp-160], rdx
 	mov	QWORD PTR [rbp-152], rcx
 	mov	QWORD PTR [rbp-144], r8
 	mov	QWORD PTR [rbp-136], r9
 	test	al, al
-	je	.L50
+	je	.L62
 	movaps	XMMWORD PTR [rbp-128], xmm0
 	movaps	XMMWORD PTR [rbp-112], xmm1
 	movaps	XMMWORD PTR [rbp-96], xmm2
@@ -540,19 +661,21 @@ sprintf:
 	movaps	XMMWORD PTR [rbp-48], xmm5
 	movaps	XMMWORD PTR [rbp-32], xmm6
 	movaps	XMMWORD PTR [rbp-16], xmm7
-.L50:
-	lea	rax, [rbp-208]
-	add	rax, 8
-	mov	QWORD PTR [rbp-184], rax
-	mov	rcx, QWORD PTR [rbp-208]
-	mov	rdx, QWORD PTR [rbp-184]
-	mov	rax, QWORD PTR [rbp-200]
+.L62:
+	mov	DWORD PTR [rbp-208], 16
+	mov	DWORD PTR [rbp-204], 48
+	lea	rax, [rbp+16]
+	mov	QWORD PTR [rbp-200], rax
+	lea	rax, [rbp-176]
+	mov	QWORD PTR [rbp-192], rax
+	lea	rdx, [rbp-208]
+	mov	rcx, QWORD PTR [rbp-224]
+	mov	rax, QWORD PTR [rbp-216]
 	mov	rsi, rcx
-	mov	rdi, rax 
-	call	vsprintf ; 调用vsprintf
-	mov	DWORD PTR [rbp-188], eax
-	mov	QWORD PTR [rbp-184], 0
-	mov	eax, DWORD PTR [rbp-188]
+	mov	rdi, rax
+	call	vsprintf
+	mov	DWORD PTR [rbp-180], eax
+	mov	eax, DWORD PTR [rbp-180]
 	leave
 	.cfi_def_cfa 7, 8
 	ret
@@ -572,7 +695,7 @@ vprintf:
 	sub	rsp, 1056
 	mov	QWORD PTR [rbp-1048], rdi
 	mov	QWORD PTR [rbp-1056], rsi
-	lea	rax, [rbp-1040]; 
+	lea	rax, [rbp-1040]
 	mov	edx, 1024
 	mov	esi, 0
 	mov	rdi, rax
@@ -585,27 +708,27 @@ vprintf:
 	call	vsprintf
 	mov	DWORD PTR [rbp-12], eax
 	cmp	DWORD PTR [rbp-12], 0
-	jns	.L52
+	jns	.L64
 	mov	eax, DWORD PTR [rbp-12]
-	jmp	.L56
-.L52:
+	jmp	.L68
+.L64:
 	lea	rax, [rbp-1040]
 	mov	QWORD PTR [rbp-8], rax
-	jmp	.L54
-.L55:
+	jmp	.L66
+.L67:
 	mov	rax, QWORD PTR [rbp-8]
 	movzx	eax, BYTE PTR [rax]
 	movsx	eax, al
 	mov	edi, eax
 	call	putchar
 	add	QWORD PTR [rbp-8], 1
-.L54:
+.L66:
 	mov	rax, QWORD PTR [rbp-8]
 	movzx	eax, BYTE PTR [rax]
 	test	al, al
-	jne	.L55
+	jne	.L67
 	mov	eax, DWORD PTR [rbp-12]
-.L56:
+.L68:
 	leave
 	.cfi_def_cfa 7, 8
 	ret
@@ -622,15 +745,15 @@ printf:
 	.cfi_offset 6, -16
 	mov	rbp, rsp
 	.cfi_def_cfa_register 6
-	sub	rsp, 208 ; 申请208字节的栈空间
-	mov	QWORD PTR [rbp-200], rdi ; 格式化字符串
-	mov	QWORD PTR [rbp-168], rsi ; 参数列表
+	sub	rsp, 224
+	mov	QWORD PTR [rbp-216], rdi
+	mov	QWORD PTR [rbp-168], rsi
 	mov	QWORD PTR [rbp-160], rdx
 	mov	QWORD PTR [rbp-152], rcx
 	mov	QWORD PTR [rbp-144], r8
 	mov	QWORD PTR [rbp-136], r9
 	test	al, al
-	je	.L60
+	je	.L72
 	movaps	XMMWORD PTR [rbp-128], xmm0
 	movaps	XMMWORD PTR [rbp-112], xmm1
 	movaps	XMMWORD PTR [rbp-96], xmm2
@@ -639,18 +762,20 @@ printf:
 	movaps	XMMWORD PTR [rbp-48], xmm5
 	movaps	XMMWORD PTR [rbp-32], xmm6
 	movaps	XMMWORD PTR [rbp-16], xmm7
-.L60:
-	lea	rax, [rbp-200]
-	add	rax, 8 ; 
-	mov	QWORD PTR [rbp-184], rax ; 参数列表
-	mov	rax, QWORD PTR [rbp-200] ; 获取格式化字符串
-	mov	rdx, QWORD PTR [rbp-184] ; 获取参数
+.L72:
+	mov	DWORD PTR [rbp-208], 8
+	mov	DWORD PTR [rbp-204], 48
+	lea	rax, [rbp+16]
+	mov	QWORD PTR [rbp-200], rax
+	lea	rax, [rbp-176]
+	mov	QWORD PTR [rbp-192], rax
+	lea	rdx, [rbp-208] ; 
+	mov	rax, QWORD PTR [rbp-216]
 	mov	rsi, rdx
 	mov	rdi, rax
 	call	vprintf
-	mov	DWORD PTR [rbp-188], eax
-	mov	QWORD PTR [rbp-184], 0
-	mov	eax, DWORD PTR [rbp-188]
+	mov	DWORD PTR [rbp-180], eax
+	mov	eax, DWORD PTR [rbp-180]
 	leave
 	.cfi_def_cfa 7, 8
 	ret

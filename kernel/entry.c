@@ -9,7 +9,7 @@ void Entry()
     // puts("The 2nd line.\n");
     const char *data = "ABC123~~";
     int a = 6;
-    printf("Hello, World!\n%s\n%d", data, a);
+    printf("Hello, World!\n%s\n%d\n", data, a);
 
     // for (int i = 0; i < height; i++)
     // {
@@ -27,4 +27,8 @@ void Entry()
 
     // 蓝色的字母A
     // DrawChar(100, 100, 'A', 0x01);
+
+    extern int main();
+    int ret = main();
+    printf("main() returned: %d\n", ret);
 }
